@@ -24,7 +24,6 @@ import java.util.Timer;
 public class main extends Applet  implements MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = 1L;
 	
-	
 	public static void wait(int time){
 		try{
 			Thread.sleep(time);
@@ -42,7 +41,7 @@ public class main extends Applet  implements MouseListener, MouseMotionListener 
 	Graphics bg;
 	
 	public void init() {
-		applet=this;
+		applet=this; 
 		applet.setSize(sx,sy);
 		applet.setBackground(Color.black);
 		
@@ -71,16 +70,8 @@ public class main extends Applet  implements MouseListener, MouseMotionListener 
 		
 		for(Obj o:mover.map.objects)
 		{
-			if(o.isdot)
-			{
-			g.setColor(Color.RED);
-			g.fillOval((int)o.x-4,(int) o.y-4, (int)o.w, (int)o.h);
-			}
-			else
-			{
-				g.setColor(Color.WHITE);
-				g.fillRect((int)o.x,(int) o.y,(int) o.w,(int)o.h);
-			}
+			
+			o.Draw(g);
 		}
 		
 	}

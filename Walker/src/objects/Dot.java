@@ -3,6 +3,8 @@ package objects;
 import mapper.Node;
 import mapper.Map;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -21,6 +23,7 @@ public class Dot extends Obj {
 		w=h=15;
 		isdot=true;
 		id=++ids;
+		color=Color.RED;
 	}
 	
 	public void data()
@@ -255,6 +258,11 @@ ArrayList<Node> getPath( int[][] x, ArrayList<Point> p, int xx, int yy)
 		}
 		return path;
 	}	
+	public void Draw(Graphics g) {
+		g.setColor(color);
+		g.fillOval((int)x-4,(int) y-4, (int)w, (int)h);
+		
+	}
 }
 
 /*        private PointF getIntersectionPoint(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
