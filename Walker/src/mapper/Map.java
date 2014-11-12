@@ -1,125 +1,79 @@
 package mapper;
 
 import objects.Obj;
-import objects.Triangle;
+import objects.Terrain;
 import objects.Wall;
 import objects.Dot;
-import java.awt.Point;
+
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class Map {
 
+	//public ArrayList<Node> node=new ArrayList<Node>();
 	public int sizex;
 	public int sizey;
-	public int size=30;
-	public ArrayList<Obj> objects;
-	
+	public int size=40;
+	public int terrainSizeInterval=4;
+	public static ArrayList<Wall> objects;
+	public static ArrayList<Wall> knownObjects;
+	public static ArrayList <Dot> dots;
+	public static ArrayList<Terrain> terrain;
+	private int dotSize=30;
+	public int offset=10;
 	public Map()
 	{
-		
+		terrain=new ArrayList<Terrain>();
 		sizex=1000;
 		sizey=1000;
-		objects=new ArrayList<Obj>();
-		objects.add(new Wall(2*size,size,3*size,size));
-		objects.add(new Wall(size,size,size,9*size));
-		objects.add(new Wall(6*size,size,4*size,size));
-		objects.add(new Wall(9*size,2*size,size,6*size)); 
-		objects.add(new Wall(3*size,3*size,5*size,size));
-		objects.add(new Wall(3*size,4*size,size,4*size));
-		objects.add(new Wall(5*size,5*size,size,2*size));
-		objects.add(new Wall(5*size,8*size,8*size,size));
-		objects.add(new Wall(size,10*size,9*size,size));
-		objects.add(new Wall(10*size,10*size,size,3*size));
-		objects.addAll(generateTriangles(objects));
-		objects.add(new Dot(0,0));
-		objects.add(new Dot(0,10*size));
-		objects.add(new Dot(11*size,5*size));
-	}
-	private Collection<Obj> generateTriangles(ArrayList<Obj> objects2) {
-		ArrayList<Obj> list=new ArrayList<Obj>();
-		
-		ArrayList<Point> availablePoints=new ArrayList<Point>();
-		for(Obj o : objects2)
-		{		
-			availablePoints.addAll(o.getPoints());
-		}		
-		for(Point p : availablePoints)
-		{
-			for(Point pi : availablePoints)
-			{
-				if(p.x!=pi.x || p.y!=pi.y)
-						if(!intersects(p,pi,objects2))
-						{
-							System.out.println(p.toString()+" "+pi.toString());
-							Triangle nt=null;
-							for(Point ppp : availablePoints)
-							{
-								if((p.x!=ppp.x || p.y!=ppp.y) && (pi.x!=ppp.x || pi.y!=ppp.y) )
-									if(!intersects(p,ppp,objects2) 
-											&& !intersects(pi,ppp,objects2)	
-											&& strona(p,pi,ppp)!=0)
-									{
-										nt=new Triangle(pi, p,ppp);
-										if(!intersectsTriangle(nt,list))
-										{
-											list.add(nt);
-											break;
-										}
-									}
-							}
-						}
-					
-					
-			}
-		}
-		return list;
+		objects=new ArrayList<Wall>();
+		dots=new ArrayList<Dot>();
+		knownObjects=new ArrayList<Wall>();
+		objects.add(new Wall(0,0,17*size,size,offset));
+		objects.add(new Wall(17*size,0,size,17*size,offset));
+		objects.add(new Wall(0,size,size,17*size,offset));
+		objects.add(new Wall(size,17*size,17*size,size,offset));
+		objects.add(new Wall(3*size,2*size,3*size,size,offset));
+		objects.add(new Wall(2*size,2*size,size,9*size,offset));
+		objects.add(new Wall(7*size,2*size,4*size,size,offset));
+		objects.add(new Wall(10*size,3*size,size,6*size,offset)); 
+		objects.add(new Wall(4*size,4*size,6*size,size,offset));
+		objects.add(new Wall(4*size,5*size,size,4*size,offset));
+		objects.add(new Wall(6*size,6*size,size,2*size,offset));
+		objects.add(new Wall(6*size,9*size,8*size,size,offset));
+		objects.add(new Wall(2*size,11*size,9*size,size,offset));
+		objects.add(new Wall(11*size,11*size,size,3*size,offset));
+		objects.add(new Wall(13*size,11*size,size,3*size,offset));
+		objects.add(new Wall(13*size,7*size,3*size,size,offset));
+		dots.add(new Dot(15*size,15*size,dotSize,offset));
+		//dots.add(new Dot(12*size,2*size,dotSize,offset));
+		//terrain.add(new Terrain(12*size,2*size,size/terrainSizeInterval,size/terrainSizeInterval,0,1));
+
+		//terrain.add(new Terrain(16*size,16*size,size/terrainSizeInterval,size/terrainSizeInterval,0,1));
 	}
 
-		private int strona(Point start, Point end, Point p)
-	    {
-	        float dot = (end.y - start.y) * (end.x - p.x) + (start.x - end.x) * (end.y - p.y);
-	        if (dot == 0) 
-	        	{
-	        	return 0;
-	        	}
-	        if (dot < 0) return -1;
-	        return 1;
-	    }
-	
-	private boolean intersectsTriangle(Triangle nt, ArrayList<Obj> list) {
-		for(Obj o:list)
-			if(o!=nt && o.intersectsTriangle(nt))
-				return true;
-		return false;
-	}
-	private boolean intersects(Point p1, Point p2, ArrayList<Obj> objects2) {
-		for(Obj o: objects2)
-		{
-			if(o.intersects(p1, p2, o))
-				return true;
-		}
-		return false;
-	}
-	public Map(ArrayList<Obj> dots)
+	public Map(Dot dots)
 	{
-		
+		terrain=new ArrayList<Terrain>();
 		sizex=1000;
 		sizey=1000;
-		objects=new ArrayList<Obj>();
-		objects.add(new Wall(2*size,size,3*size,size));
-		objects.add(new Wall(size,size,size,9*size));
-		objects.add(new Wall(6*size,size,4*size,size));
-		objects.add(new Wall(9*size,2*size,size,6*size)); 
-		objects.add(new Wall(3*size,3*size,5*size,size));
-		objects.add(new Wall(3*size,4*size,size,4*size));
-		objects.add(new Wall(5*size,6*size,size,2*size));
-		objects.add(new Wall(5*size,8*size,8*size,size));
-		objects.add(new Wall(size,10*size,9*size,size));
-		objects.add(new Wall(10*size,10*size,size,3*size));
-		objects.addAll(generateTriangles(objects));
-		for(Obj o:dots)
-			objects.add(o);
+		objects=new ArrayList<Wall>();
+		knownObjects=new ArrayList<Wall>();
+		objects.add(new Wall(0,0,17*size,size,offset));
+		objects.add(new Wall(17*size,0,size,17*size,offset));
+		objects.add(new Wall(0,size,size,17*size,offset));
+		objects.add(new Wall(size,17*size,17*size,size,offset));
+		objects.add(new Wall(3*size,2*size,3*size,size,offset));
+		objects.add(new Wall(2*size,2*size,size,9*size,offset));
+		objects.add(new Wall(7*size,2*size,4*size,size,offset));
+		objects.add(new Wall(10*size,3*size,size,6*size,offset)); 
+		objects.add(new Wall(4*size,4*size,6*size,size,offset));
+		objects.add(new Wall(4*size,5*size,size,4*size,offset));
+		objects.add(new Wall(6*size,6*size,size,2*size,offset));
+		objects.add(new Wall(6*size,9*size,8*size,size,offset));
+		objects.add(new Wall(2*size,11*size,9*size,size,offset));
+		objects.add(new Wall(13*size,7*size,3*size,size,offset));
+		objects.add(new Wall(13*size,8*size,size,3*size,offset));
+		
 	}
 	public void draw()
 	{
