@@ -26,7 +26,7 @@ public class VacumWalker extends Thread {
 	public void run()
 	{
 		Point p=t.GetNextPoint(b);
-		while(p!=null)
+		while(p!=null) 
 		{		int i=0;	
 			while(dot.walk)
 			try{
