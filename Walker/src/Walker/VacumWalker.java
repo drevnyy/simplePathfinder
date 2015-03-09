@@ -22,7 +22,7 @@ public class VacumWalker extends Thread {
 		t=new TerrainWalker();
 		p=new PathFinder(0,0);
 	}
-	
+	 
 	public void run()
 	{
 		Point p=t.GetNextPoint(b);
